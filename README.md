@@ -52,7 +52,7 @@ docker-compose up -d
 
 ### Deployment for production
 
-Uses [prod.docker-compose.yml](prod.docker-compose.yml) file and the production dockerfiles for each container.
+Uses [prod.docker-compose.yml](prod.docker-compose.yml) file and the production dockerfiles for each container. You will need to change the POST request URL to point to the backend if it is not at localhost on your machine. [Change POST request URL in frontend/src/components/MainContent.js](frontend/src/components/MainContent.js)
 
 ```
 docker-compose -f docker-compose.yml -f prod.docker-compose.yml up -d --build
@@ -62,7 +62,7 @@ In production, point to port 8083 or change the exposed port in the [prod.docker
 
 If you need to change ports here is a list of where those files live:
 
-* [Change fetch POST request in frontend MainContent.js](frontend/src/components/MainContent.js)
+* [Change POST request URL in frontend/src/components/MainContent.js](frontend/src/components/MainContent.js)
 * [Dev Frontend Dockerfile](frontend/dev.docx2html-react-frontend.Dockerfile)
 * [Prod Frontend Dockerfile](frontend/prod.docx2html-react-frontend.Dockerfile)
 * [Dev Backend Dockerfile](backend/dev.docx2html-flask-backend.Dockerfile)

@@ -228,7 +228,7 @@ class MainContent extends Component {
                                     </Modal>
                                 </div>
                             </div>
-
+                            {/*}
                             <div className="form-check my-3">
                                 <div className="row">
                                     <div className="col">
@@ -253,6 +253,7 @@ class MainContent extends Component {
                                     </Modal>
                                 </div>
                             </div>
+                            */}
 
                             <div className="form-check my-3">
                                 <div className="row">
