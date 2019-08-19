@@ -30,7 +30,7 @@ cd frontend && npm install
 ```
 
 ```
-cd docx2html-docker-app && docker-compose up -d --build
+cd docx-to-podaac-html && docker-compose up -d --build
 ```
 
 This command builds each docker container and installs all of the dependencies needed. It also runs the app as a daemon using -d, this allows you to exit your terminal session and continue to run the app. 
