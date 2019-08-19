@@ -1,0 +1,53 @@
+# development docker-compose file
+# not for production, use prod.docker-compose.yml for production
+version: '3.7'
+
+services:
+
+  backend:
+    image: dev-docx2html-flask-backend
+    restart: always
+    build: 
+      context: ./backend/
+      dockerfile: dev.docx2html-flask-backend.Dockerfile
+    container_name: dev-docx2html-flask-backend
+    expose:
+      - 8081
+    volumes:
+      - './backend:/app'
+    environment:
+      - LANG=en_US.UTF-8
+      - LC_ALL=en_US.UTF-8
+
+  frontend:
+    image: dev-docx2html-react-frontend
+    build:
+      context: ./frontend/
+      dockerfile: dev.docx2html-react-frontend.Dockerfile
+    container_name: dev-docx2html-react-frontend
+    restart: always
+    volumes:
+      - './frontend:/opt/app'
+    ports:
+      - '8083:3000'
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
+    command: npm start
+
+  nginx:
+    image: dev-docx2html-nginx
+    build: 
+      context: ./nginx/
+      dockerfile: dev.docx2html-nginx.Dockerfile
+    container_name: dev-docx2html-nginx
+    restart: always
+    ports:
+      - '8082:8082'
+
+
+# nginx connects frontend to backend
+# backend exposes 8081, nginx passes that port to 8082
+# frontend acceses backend by POST req to localhost:8082
+# frontend accessed on port 8083
