@@ -97,6 +97,9 @@ If you need to change ports here is a list of where those files live:
 
 ### End to End App Workflow
 
+![App Architecture](app-arch.png)
+![Backend Architecture](backend-arch.png)
+
 The user uplodas a file or multiple files on the frontend. React uses Fetch for a POST request to the Flask Backend. The request gets handled in app/api.py. It saves the .docx file to the server in /backend/ and sends the file to converter/handle_input.py.
 
 converter/convertDOCX2HTML.py converts the file to an HTML string, deletes the .docx file and returns the HTML string.
