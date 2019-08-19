@@ -161,9 +161,9 @@ class MainContent extends Component {
     render() {
         return (
             <div className="container">
-                <main className="text-left mt-5 mb-5"></main>
+                <main className="text-center mt-5 mb-5"></main>
                 <div className="row">
-                    <div className="col ml-5">
+                    <div className="col text-center">
                         <form onSubmit={this.handleSubmit}>
                             <div>
                                 <p className="errorStyle">{this.state.submitError ? 'Oops! Something went wrong' : ''}</p>
@@ -172,7 +172,7 @@ class MainContent extends Component {
                                 <p className="errorStyle">{this.state.fileSelectedError ? 'Oops! Please select a file' : ''}</p>
                                 <p className="errorStyle">{this.state.wrongFileTypeError ? 'Oops! Wrong file type. Only DOCX files are permitted' : ''}</p>
                             </div>
-                            <div className="form-group">
+                            <div className="form-group files">
                                 <input className="my-1" ref={(ref) => { this.uploadInput = ref; }} type="file" accept=".docx" multiple/>
                                 <this.LoadingSpinner />
                             </div>
