@@ -4,7 +4,7 @@ import spacy
 from spacy.matcher import Matcher
 import re
 
-nlp = spacy.load('en_core_web_sm')
+nlp = spacy.load('en_core_web_lg')
 
 
 # strip all numbers and special characters and return an nlp vector string
@@ -30,7 +30,6 @@ def compare_words(w1, w2):
 
 
 def get_replacement_word(word):
-    '''
     md_matcher = Matcher(nlp.vocab)
     md_matcher.add("Mission Description", None, [{"LOWER": "mission"}, {"LOWER": "description"}])
     md_matches = md_matcher(word)
@@ -43,13 +42,15 @@ def get_replacement_word(word):
     if ms_matches:
         return "Sensor Overview"
 
-    summary_key = nlp('abstract summary overview document introduction')
+    summary_key = nlp('abstract summary overview document introduction, \
+        abridgment, brief, compendium,condensation, conspectus, digest, \
+            outline, synopsis')
     for token in summary_key:
         sim_score = word.similarity(token)
         # print(word, " <-> ", token, "=> ", sim_score)
         if sim_score > .9:
             # print("Similarity Score:", sim_score)
-            return "Summary"
+            return "Abstract"
 
     acknowledgements_key = nlp('credit acknowledgements citations')
     for token in acknowledgements_key:
@@ -58,7 +59,7 @@ def get_replacement_word(word):
         if sim_score > .9:
             # print("Similarity Score:",sim_score)
             return "Acknowledgements"
-    '''
+    
     return
 
 # cool stuff in nltk:

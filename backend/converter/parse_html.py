@@ -125,14 +125,34 @@ def add_bootstrap(soup):
 
 # add podaac specific header, footer, css styling etc
 def add_podaac(soup):
-    #    ** TO DO **    #
-
     # add other podaac specific styling
     # add img classes and table classes
 
-    # adds alt tag and img wrapper
+    # adds alt tag and podaac specific img wrapper that needs to line up with PODAAC CSS
     for img in soup.find_all('img'):
+        img['class'] = 'podaac-img-fluid'
         img['alt'] = 'image'
+
+    # add responsive table class to all tables - needs to line up with PODAAC CSS
+    for tbl in soup.find_all('table'):
+        tbl.wrap(soup.new_tag('div', **{'class': 'podaac-table-responsive'}))
+        tbl['class'] = 'podaac-table podaac-table-bordered'
+
+
+# loops through all header tag strings and replaces them with structured words
+def process_header(soup, tag):
+    print('in process header')
+    for h in soup.findAll(tag):
+        # remove all <a> tags in headers
+        remove_children_tags(h, 'a')
+
+        # set header string variable for nlp analysis
+        for s in list(h.strings):
+            hs = nlp.prepare_string_for_nlp(s)
+
+            replacement_string = nlp.get_replacement_word(hs)
+            if replacement_string:
+                s.replace_with(replacement_string)
     
 
 # uses bs4 to parse html doc, returns html string
@@ -143,17 +163,15 @@ def parse(html, file_name, make_toc, ftp, run_nlp, css_type):
     # Make Doc Look Good #
     # CSS, header/footer #
     ######################
-    print('in parse function')
 
     if css_type == 'podaac':
-        print('css type says podaac')
         # add podaac specific css, styling, header and footer
 
         #####################
         #    ** TO DO **    #
         # add podaac header and footer php hooks or otherwise
-        # need to add HTML elements here so we can BS4 the HTML
-        # then later in the program can remove the head stuff and add php web hooks
+        # don't add anything that will mess up the soup obj creation
+        # then later in the program can remove the head stuff and add php web hooks or however we want to add PODAAC stuff
         #####################
         
         # html = '<!DOCTYPE html><html><head><title>PODAAC HTML</title> \
@@ -173,7 +191,7 @@ def parse(html, file_name, make_toc, ftp, run_nlp, css_type):
         soup = BeautifulSoup(html, 'html.parser') 
         add_bootstrap(soup)
 
-    # add title using file_name
+    # add title using file_name without file type extension
     t = os.path.splitext(file_name)[0]
     if soup.title:
         soup.title.string = t
@@ -190,9 +208,16 @@ def parse(html, file_name, make_toc, ftp, run_nlp, css_type):
     
     # add id tags to each header 
     if header_type == 'both':
+        if run_nlp:
+            process_header(soup, 'h1')
+            process_header(soup, 'h2')
+
         add_id_to_tags(soup, 'h1')
         add_id_to_tags(soup, 'h2')
     else:
+        if run_nlp:
+            process_header(soup, header_type)
+
         add_id_to_tags(soup, header_type)
     
     # make a new table of contents
@@ -214,28 +239,26 @@ def parse(html, file_name, make_toc, ftp, run_nlp, css_type):
     if ftp:
         convert_ftp_to_drive(soup)
 
+
+    # ########################################################### #      
+    # here is where we would add podaac specific stuff again      
+    # for example, convert the soup obj to a string               
+    # then add a php web hook to the front and back of the string 
+    # then just return that string
+    # ########################################################### #
+    if css_type == 'podaac':
+        html = str(soup)
+        html = "<?php include('header.php');?><body>" + html + "</body><?php include('footer.php');?>"
+        return html
+
     # return html as a string
     return str(soup)
+
 
 
 ################################
 ### not using this right now ###
 ################################
-
-## ** TO DO ** ##
-# loops through all header tag strings and replaces them with structured words
-def process_header(soup, tag):
-    for h in soup.findAll(tag):
-        # remove all <a> tags in headers
-        remove_children_tags(h, 'a')
-
-        # # set header string variable for nlp analysis
-        # for s in list(h.strings):
-        #     hs = nlp.prepare_string_for_nlp(s)
-
-        #     replacement_string = nlp.get_replacement_word(hs)
-        #     if replacement_string:
-        #         s.replace_with(replacement_string)
 
 
 # only adds bootstrap to the html doc - used for save after making custom wysiwyg edits

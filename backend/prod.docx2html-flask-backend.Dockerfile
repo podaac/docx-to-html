@@ -19,7 +19,7 @@ ADD . /opt/backend-app
 RUN pip3 install -r requirements.txt
 
 # install spacy nlp library - sm for small library, if we need vectors install en_core_web_lg and change in nlp.py
-RUN python3 -m spacy download en_core_web_sm
+RUN python3 -m spacy download en_core_web_lg
 
 # run the app through uwsgi server and go through app.ini settings
 CMD [ "uwsgi", "app.ini" ]

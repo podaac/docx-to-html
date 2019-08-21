@@ -123,9 +123,9 @@ class MainContent extends Component {
             this.state.convertFTPLinks ? data.append('ftp', true) : data.append('ftp', false)
             data.append('csstype', this.state.cssType)
 
-            // make api call - POST req - to the server 
-            fetch('http://podaac-devwhale1.jpl.nasa.gov:8082/', {
-            //fetch('http://localhost:8082/', {  
+            // make api call - POST req to the server 
+            //fetch('http://podaac-devwhale1.jpl.nasa.gov:8082/', {
+            fetch('http://localhost:8082/', {  
                 method: 'POST',
                 body: data,
             }).then((response) => {
@@ -228,7 +228,7 @@ class MainContent extends Component {
                                     </Modal>
                                 </div>
                             </div>
-                            {/*}
+                            
                             <div className="form-check my-3">
                                 <div className="row">
                                     <div className="col">
@@ -253,7 +253,6 @@ class MainContent extends Component {
                                     </Modal>
                                 </div>
                             </div>
-                            */}
 
                             <div className="form-check my-3">
                                 <div className="row">
