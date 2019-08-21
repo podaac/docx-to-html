@@ -22,6 +22,7 @@ def on_match(matcher, doc, id, matches):
 
 
 # compares two words and returns their similarity score
+# allows for passing in strings - does the nlp() for you
 def compare_words(w1, w2):
     w1 = nlp(w1)
     w2 = nlp(w2)
@@ -30,18 +31,14 @@ def compare_words(w1, w2):
 
 
 def get_replacement_word(word):
+    # search for phrase 'Mission Description' and change it 
     md_matcher = Matcher(nlp.vocab)
     md_matcher.add("Mission Description", None, [{"LOWER": "mission"}, {"LOWER": "description"}])
     md_matches = md_matcher(word)
     if md_matches:
         return "Mission Description"
 
-    ms_matcher = Matcher(nlp.vocab)
-    ms_matcher.add("Sensor Overview", None, [{"LOWER": "sensor"}, {"LOWER": "overview"}])
-    ms_matches = ms_matcher(word)
-    if ms_matches:
-        return "Sensor Overview"
-
+    # search for >.9 similarities to 'Abstract' and change it to 'Abstract'
     summary_key = nlp('abstract summary overview document introduction, \
         abridgment, brief, compendium,condensation, conspectus, digest, \
             outline, synopsis')
@@ -52,6 +49,7 @@ def get_replacement_word(word):
             # print("Similarity Score:", sim_score)
             return "Abstract"
 
+    # search for >.9 similarities to 'Acknowledgements' and change it to 'Acknowledgements'
     acknowledgements_key = nlp('credit acknowledgements citations')
     for token in acknowledgements_key:
         sim_score = word.similarity(token)
@@ -59,8 +57,7 @@ def get_replacement_word(word):
         if sim_score > .9:
             # print("Similarity Score:",sim_score)
             return "Acknowledgements"
-    
-    return
+
 
 # cool stuff in nltk:
 # bigrams/trigrams etc - finding collections of words
