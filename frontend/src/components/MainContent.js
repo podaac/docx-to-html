@@ -230,7 +230,7 @@ class MainContent extends Component {
                             </div>
                             
                             {/* leaving the NLP stuff commented out on the frontend for now because it is not working 100%*/}
-                            {/*
+                            
                             <div className="form-check my-3">
                                 <div className="row">
                                     <div className="col">
@@ -255,7 +255,7 @@ class MainContent extends Component {
                                     </Modal>
                                 </div>
                             </div>
-                            */}
+                            
 
                             <div className="form-check my-3">
                                 <div className="row">
@@ -276,7 +276,7 @@ class MainContent extends Component {
                                         Adds header and footer. Adds bootstrap styling to img tags, table tags and adds a container tag. Adds link to Bootstrap CDN.
                                         <br></br><br></br>
                                         <b>PODAAC</b><br></br>
-                                        Adds header and footer. Adds links to all PODAAC CSS stylesheets.
+                                        Adds references to dynamically use PODAAC's default Header and Footer.
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <Button variant="secondary" onClick={() => this.closeModal('cssModal')}>

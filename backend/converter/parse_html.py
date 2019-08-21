@@ -125,9 +125,6 @@ def add_bootstrap(soup):
 
 # add podaac specific header, footer, css styling etc
 def add_podaac(soup):
-    # add other podaac specific styling
-    # add img classes and table classes
-
     # adds alt tag and podaac specific img wrapper that needs to line up with PODAAC CSS
     for img in soup.find_all('img'):
         img['class'] = 'podaac-img-fluid'
@@ -141,7 +138,6 @@ def add_podaac(soup):
 
 # loops through all header tag strings and replaces them with structured words
 def process_header(soup, tag):
-    print('in process header')
     for h in soup.findAll(tag):
         # remove all <a> tags in headers
         remove_children_tags(h, 'a')
@@ -150,7 +146,10 @@ def process_header(soup, tag):
         for s in list(h.strings):
             hs = nlp.prepare_string_for_nlp(s)
 
+            # send word for nlp analysis
             replacement_string = nlp.get_replacement_word(hs)
+
+            # if nlp returns a valid replacement word replace header section
             if replacement_string:
                 s.replace_with(replacement_string)
     

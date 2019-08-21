@@ -16,11 +16,6 @@ def prepare_string_for_nlp(string):
     return s
 
 
-# possible callback function with matcher -- might use this
-def on_match(matcher, doc, id, matches):
-    print("Matched!", matches)
-
-
 # compares two words and returns their similarity score
 # allows for passing in strings - does the nlp() for you
 def compare_words(w1, w2):
@@ -30,32 +25,48 @@ def compare_words(w1, w2):
     return w1.similarity(w2)
 
 
+# takes in a word and returns a replacement word if sim score is >.9 or phrase match
 def get_replacement_word(word):
-    # search for phrase 'Mission Description' and change it 
+    # ##################### #
+    # Exact Phrase Matching #
+    # ##################### #
+
+    # search for exact phrase 'Mission Description' and change it 
     md_matcher = Matcher(nlp.vocab)
     md_matcher.add("Mission Description", None, [{"LOWER": "mission"}, {"LOWER": "description"}])
-    md_matches = md_matcher(word)
-    if md_matches:
+    is_match = md_matcher(word)
+    if is_match:
         return "Mission Description"
 
+    # ########################### #
+    # Similarity Score on Phrases #
+    # ########################### #
+
+    # search for >.9 similarity score on a phrase and change it to a different phrase
+    processing_methodology = nlp('Processing Methodology')
+    sim_score = word.similarity(processing_methodology)
+
+    if sim_score > .9:
+        return 'Processing Methodology'
+
+    # ####################################### #
+    # Similarity Score on each word in a list #
+    # ####################################### #
+
     # search for >.9 similarities to 'Abstract' and change it to 'Abstract'
-    summary_key = nlp('abstract summary overview document introduction, \
-        abridgment, brief, compendium,condensation, conspectus, digest, \
-            outline, synopsis')
+    summary_key = nlp('abstract summary overview document introduction \
+        abridgment brief compendium condensation conspectus digest \
+            outline synopsis')
     for token in summary_key:
         sim_score = word.similarity(token)
-        # print(word, " <-> ", token, "=> ", sim_score)
         if sim_score > .9:
-            # print("Similarity Score:", sim_score)
             return "Abstract"
 
     # search for >.9 similarities to 'Acknowledgements' and change it to 'Acknowledgements'
     acknowledgements_key = nlp('credit acknowledgements citations')
     for token in acknowledgements_key:
         sim_score = word.similarity(token)
-        # print(word, " <-> ", token, "=> ", sim_score)
         if sim_score > .9:
-            # print("Similarity Score:",sim_score)
             return "Acknowledgements"
 
 
