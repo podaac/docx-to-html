@@ -54,10 +54,10 @@ def get_replacement_word(word):
     # ####################################### #
 
     # search for >.9 similarities to 'Abstract' and change it to 'Abstract'
-    summary_key = nlp('abstract summary overview document introduction \
+    abstract_key = nlp('abstract summary overview document introduction \
         abridgment brief compendium condensation conspectus digest \
             outline synopsis')
-    for token in summary_key:
+    for token in abstract_key:
         sim_score = word.similarity(token)
         if sim_score > .9:
             return "Abstract"
