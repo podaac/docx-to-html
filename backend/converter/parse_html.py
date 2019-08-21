@@ -173,9 +173,12 @@ def parse(html, file_name, make_toc, ftp, run_nlp, css_type):
         # then later in the program can remove the head stuff and add php web hooks or however we want to add PODAAC stuff
         #####################
         
-        # html = '<!DOCTYPE html><html><head><title>PODAAC HTML</title> \
-        #     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> \
-        #     </head><body><div class="container" id="container"><a id="top" name="top"></a>' + html + '<br><br><a href="#top">Back to Top</a></div></body></html>'
+        # this needs to be set so that when it creates a new table of contents it has something to look for 
+        # if no table of contents exists in the original DOCX document
+        # the new table of contents function looks for the id='top' tag and creates it after that
+        html = '<!DOCTYPE html><html><head><title>PODAAC HTML</title> \
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> \
+            </head><body><div class="container" id="container"><a id="top" name="top"></a>' + html + '<br><br><a href="#top">Back to Top</a></div></body></html>'
         # setup soup
         soup = BeautifulSoup(html, 'html.parser') 
         add_podaac(soup)
