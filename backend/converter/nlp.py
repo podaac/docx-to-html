@@ -27,6 +27,10 @@ def compare_words(w1, w2):
 
 # takes in a word and returns a replacement word if sim score is >.9 or phrase match
 def get_replacement_word(word):
+    # make sure the word is a valid word vector
+    if not word or not word.vector_norm:
+        return
+
     # ##################### #
     # Exact Phrase Matching #
     # ##################### #
@@ -34,9 +38,12 @@ def get_replacement_word(word):
     # search for exact phrase 'Mission Description' and change it 
     md_matcher = Matcher(nlp.vocab)
     md_matcher.add("Mission Description", None, [{"LOWER": "mission"}, {"LOWER": "description"}])
-    is_match = md_matcher(word)
-    if is_match:
-        return "Mission Description"
+    try:
+        is_match = md_matcher(word)
+        if is_match:
+            return "Mission Description"
+    except:
+        print('')
 
     # ########################### #
     # Similarity Score on Phrases #
@@ -44,10 +51,13 @@ def get_replacement_word(word):
 
     # search for >.9 similarity score on a phrase and change it to a different phrase
     processing_methodology = nlp('Processing Methodology')
-    sim_score = word.similarity(processing_methodology)
-
-    if sim_score > .9:
-        return 'Processing Methodology'
+    try:
+        sim_score = word.similarity(processing_methodology)
+        if sim_score > .9:
+            return 'Processing Methodology'
+    except:
+        print('')
+    
 
     # ####################################### #
     # Similarity Score on each word in a list #
@@ -58,16 +68,22 @@ def get_replacement_word(word):
         abridgment brief compendium condensation conspectus digest \
             outline synopsis')
     for token in abstract_key:
-        sim_score = word.similarity(token)
-        if sim_score > .9:
-            return "Abstract"
+        try:
+            sim_score = word.similarity(token)
+            if sim_score > .9:
+                return "Abstract"
+        except:
+            print('')
 
     # search for >.9 similarities to 'Acknowledgements' and change it to 'Acknowledgements'
     acknowledgements_key = nlp('credit acknowledgements citations')
     for token in acknowledgements_key:
-        sim_score = word.similarity(token)
-        if sim_score > .9:
-            return "Acknowledgements"
+        try:
+            sim_score = word.similarity(token)
+            if sim_score > .9:
+                return "Acknowledgements"
+        except:
+            print('')
 
 
 # cool stuff in nltk:

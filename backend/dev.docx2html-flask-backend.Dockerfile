@@ -10,6 +10,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install software-properties-common
 # install inkscape
 RUN add-apt-repository universe && add-apt-repository ppa:inkscape.dev/stable && apt-get update && apt-get install inkscape -y
 
+# suppress some spaCy warning error logging
+ENV SPACY_WARNING_IGNORE=W008
+
+
 RUN mkdir -p /app
 WORKDIR /app
 ADD . /app
