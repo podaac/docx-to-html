@@ -124,8 +124,8 @@ class MainContent extends Component {
             data.append('csstype', this.state.cssType)
 
             // make api call - POST req to the server 
-            fetch('http://podaac-devwhale1.jpl.nasa.gov:8082/', {
-            //fetch('http://localhost:8082/', {  
+            //fetch('http://podaac-devwhale1.jpl.nasa.gov:8082/', {
+            fetch('http://localhost:8082/', {  
                 method: 'POST',
                 body: data,
             }).then((response) => {
