@@ -129,3 +129,4 @@ This project is licensed under the TODO - see the [LICENSE.md](LICENSE.md) file 
 ## Acknowledgments
 
 *  *JPL Mentors:* David Moroni & Suresh Vannan
+*  *Help and Support:* Wilbert Veit, Ying Chen, Allan Yu, Sandra Cosic

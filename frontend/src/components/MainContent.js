@@ -229,8 +229,6 @@ class MainContent extends Component {
                                 </div>
                             </div>
                             
-                            {/* leaving the NLP stuff commented out on the frontend for now because it is not working 100%*/}
-                            
                             <div className="form-check my-3">
                                 <div className="row">
                                     <div className="col">
@@ -245,7 +243,9 @@ class MainContent extends Component {
                                         <Modal.Body>
                                             Runs various Natural Langage Processing algorithms to dynamically change content in the document.
                                             <br></br><br></br>
-                                            Can change header section titles based on a list of keywords or phrases specified.
+                                            Can change header section titles based on a list of keywords and/or phrases.
+                                            <br></br><br></br>
+                                            This is in beta and is purely used for demo purposes to show the potential functionality.
                                             </Modal.Body>
                                         <Modal.Footer>
                                             <Button variant="secondary" onClick={() => this.closeModal('nlpModal')}>
@@ -261,7 +261,7 @@ class MainContent extends Component {
                                 <div className="row">
                                     <div className="col" onChange={event => this.handleCSSType(event)}>
                                         <input type="radio" value="bootstrap" name="cssStyle" defaultChecked/> Bootstrap CSS
-                                        <input className="ml-3" type="radio" value="podaac" name="cssStyle"/> PODAAC CSS (beta)
+                                        <input className="ml-3" type="radio" value="podaac" name="cssStyle"/> PODAAC Header, Footer & CSS
                                         <sup><i className="fa fa-info-circle fa-lg ml-2 text-info" onClick={() => this.handleShowModal('cssModal')} /></sup>
                                     </div>
                                 </div>
@@ -270,13 +270,13 @@ class MainContent extends Component {
                                         <Modal.Title>CSS Styling</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body>
-                                        Choose between Bootstrap 4 or PODAAC CSS styling. 
+                                        Choose between Bootstrap 4 or PODAAC styling. 
                                         <br></br><br></br>
                                         <b>Bootstrap</b><br></br>
                                         Adds header and footer. Adds bootstrap styling to img tags, table tags and adds a container tag. Adds link to Bootstrap CDN.
                                         <br></br><br></br>
                                         <b>PODAAC</b><br></br>
-                                        Adds references to dynamically use PODAAC's default Header and Footer.
+                                        Dynamically adds PODAAC's Header, Footer and CSS styles so the converted document looks just like any other PODAAC web page.
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <Button variant="secondary" onClick={() => this.closeModal('cssModal')}>

@@ -72,7 +72,7 @@ def make_new_table_of_contents(soup, tag):
             new_tag.string = s
             toc.insert_after(new_tag)
             
-    # no table of contents so build a whole new one
+    # no table of contents so build a whole new one at the top of the page
     else:
         # find top tag and add below that
         top = soup.find('a', id="top")
@@ -127,13 +127,15 @@ def add_bootstrap(soup):
 def add_podaac(soup):
     # adds alt tag and podaac specific img wrapper that needs to line up with PODAAC CSS
     for img in soup.find_all('img'):
-        img['class'] = 'podaac-img-fluid'
         img['alt'] = 'image'
 
     # add responsive table class to all tables - needs to line up with PODAAC CSS
     for tbl in soup.find_all('table'):
-        tbl.wrap(soup.new_tag('div', **{'class': 'podaac-table-responsive'}))
-        tbl['class'] = 'podaac-table podaac-table-bordered'
+        tbl.wrap(soup.new_tag('div', **{'style': 'overflow-x:auto'}))
+        tbl['style'] = 'border: 1px solid black;' 
+    
+    for td in soup.find_all('td'):
+        td['style'] = 'border: 1px solid black;' 
 
 
 # loops through all header tag strings and replaces them with structured words
@@ -163,18 +165,13 @@ def parse(html, file_name, make_toc, ftp, run_nlp, css_type):
     # CSS, header/footer #
     ######################
 
+    # add podaac specific css, styling, header and footer
     if css_type == 'podaac':
-        # add podaac specific css, styling, header and footer
-
-        #####################
-        #    ** TO DO **    #
-        # add podaac header and footer php hooks or otherwise
         # don't add anything that will mess up the soup obj creation
-        # then later in the program can remove the head stuff and add php web hooks or however we want to add PODAAC stuff
-        #####################
+        # then later in the program can remove the head stuff and add javascript to add header, footer, css etc
         
         # this needs to be set so that when it creates a new table of contents it has something to look for 
-        # if no table of contents exists in the original DOCX document
+        # if no table of contents exists in the original DOCX document.
         # the new table of contents function looks for the id='top' tag and creates it after that
         html = '<!DOCTYPE html><html><head><title>PODAAC HTML</title> \
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> \
@@ -183,7 +180,7 @@ def parse(html, file_name, make_toc, ftp, run_nlp, css_type):
         soup = BeautifulSoup(html, 'html.parser') 
         add_podaac(soup)
     else:
-        # add head, meta data, and container
+        # add head, meta data, and container for Bootstrap CSS
         html = '<!DOCTYPE html><html><head><title>Converted HTML</title> \
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> \
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" \
@@ -198,6 +195,10 @@ def parse(html, file_name, make_toc, ftp, run_nlp, css_type):
     if soup.title:
         soup.title.string = t
 
+    # ############### #
+    # Image Converter #
+    # ############### #
+
     # convert all non-browser supported images to pngs
     soup = image_converter.parse(soup)
 
@@ -210,16 +211,20 @@ def parse(html, file_name, make_toc, ftp, run_nlp, css_type):
     
     # add id tags to each header 
     if header_type == 'both':
+        # use NLP to dynamically chnage header section content
         if run_nlp:
             process_header(soup, 'h1')
             process_header(soup, 'h2')
 
+        # add id tags to header sections to reference in new TOC
         add_id_to_tags(soup, 'h1')
         add_id_to_tags(soup, 'h2')
     else:
+        # use NLP to dynamically chnage header section content
         if run_nlp:
             process_header(soup, header_type)
 
+        # add id tags to header sections to reference in new TOC
         add_id_to_tags(soup, header_type)
     
     # make a new table of contents
@@ -234,6 +239,7 @@ def parse(html, file_name, make_toc, ftp, run_nlp, css_type):
         # if there are no section headers then dont make a new toc
         elif header_type == 'none':
             pass
+        # else use the header type we found to build new TOC
         else:
             make_new_table_of_contents(soup, header_type)
 
@@ -245,12 +251,13 @@ def parse(html, file_name, make_toc, ftp, run_nlp, css_type):
     # ########################################################### #      
     # here is where we would add podaac specific stuff again      
     # for example, convert the soup obj to a string               
-    # then add a php web hook to the front and back of the string 
+    # then add some javascript to add PODAAC Header, Footer and CSS stuff
     # then just return that string
     # ########################################################### #
     if css_type == 'podaac':
         html = str(soup)
-        html = "<?php include('header.php');?><body>" + html + "</body><?php include('footer.php');?>"
+        html = html + '<script src="https://podaac.jpl.nasa.gov/api/template-wrap.js" type="text/javascript"></script>'\
+             + '<style>#podaac-content img {max-width:100%;}</style>'
         return html
 
     # return html as a string
@@ -266,7 +273,13 @@ def parse(html, file_name, make_toc, ftp, run_nlp, css_type):
 # only adds bootstrap to the html doc - used for save after making custom wysiwyg edits
 def only_bootstrap(html):
     # adds header and footer
-    html = '<!DOCTYPE html><html><head><title>Converted HTML</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></head><body><div class="container" id="container"><a name="top"></a>' + html + '<br><br><a href="#top">Back to Top</a></div></body></html>'
+    html = '<!DOCTYPE html><html><head><title>Converted HTML</title><meta http-equiv="Content-Type"\
+         content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1,\
+              shrink-to-fit=no"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"\
+                   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"\
+                       </head><body><div class="container" id="container"><a name="top"></a>' + html + '<br><br>\
+                           <a href="#top">Back to Top</a></div></body></html>'
+
     soup = BeautifulSoup(html, 'html.parser')  # setup soup object
 
     # add fluid container class to all images

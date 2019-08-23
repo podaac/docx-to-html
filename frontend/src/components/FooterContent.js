@@ -45,8 +45,10 @@ class FooterContent extends Component {
                         <b>Bootstrap CSS</b><br></br>
                         By parsing the HTML with Beautiful Soup 4 we can add CSS styles, classes and id tags. We're able to add the Bootstrap CDN to the head tag and then add Bootstrap classes, tags and elements to style the HTML. This allows us to create a stylized, responsive and mobile friendly HTML page.
                         <br></br><br></br>
-                        <b>PODAAC CSS (beta)</b><br></br>
-                        This still needs to be worked on. It will add PODAAC's header, footer and CSS styling to the document. This will make the converted HTML look like any other PODAAC page.
+                        <b>PODAAC Header, Footer & CSS</b><br></br>
+                        Dynamically adds PODAAC's Header, Footer and CSS styles so the converted document looks just like any other PODAAC web page.
+                        <br></br><br></br>
+                        This is done by adding Javascript to the end of the converted document to generate the PODAAC specific HTML and styling. It also adds vanilla CSS styles to images and tables to make them responsive.
                         <br></br><br></br>
                         <b>This app supports PNG & JPG images</b> <br></br>
                         It will convert TIFF, EMF & WMF to PNG but this may not always work. If your images are not displaying on the webpage, try converting them to PNG or JPG before uploading your document.
