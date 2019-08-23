@@ -3,11 +3,11 @@ FROM node:12.6.0
 
 ADD package.json /tmp/package.json
 RUN cd /tmp && npm install && npm install -g react-scripts
-RUN mkdir -p /opt/app && cp -a /tmp/node_modules /opt/app/
+RUN mkdir -p /opt/frontend-app && cp -a /tmp/node_modules /opt/frontend-app/
 
-WORKDIR /opt/app
+WORKDIR /opt/frontend-app
 
-ADD . /opt/app
+ADD . /opt/frontend-app
 
 # start the react app
 CMD npm start
