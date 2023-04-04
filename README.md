@@ -30,6 +30,11 @@ cd frontend && npm install
 ```
 Note: If you do not yet have node.js (required dependency to execute the "npm" command) installed, it's highly recommended to first install the Node Version Manager (NVM) available here: https://github.com/nvm-sh/nvm#installing-and-updating
 
+To install node.js using  NVM:
+```
+nvm install node
+```
+Then build the Docker container
 ```
 cd docx-to-podaac-html && docker-compose up -d --build
 ```
