@@ -28,6 +28,7 @@ Install the node modules in the dev build
 ```
 cd frontend && npm install 
 ```
+Note: If you do not yet have node.js (required dependency to execute the "npm" command) installed, it's highly recommended to first install the Node Version Manager (NVM) available here: https://github.com/nvm-sh/nvm#installing-and-updating
 
 ```
 cd docx-to-podaac-html && docker-compose up -d --build
