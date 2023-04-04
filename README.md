@@ -19,7 +19,7 @@ https://docs.docker.com/install/
 Download the app:
 
 ```
-git clone https://podaac-git.jpl.nasa.gov:8443/ajoseph/docx-to-podaac-html
+git clone https://github.com/podaac/docx-to-html/
 ```
 
 ### For development - build the docker containers using docker-compose:
